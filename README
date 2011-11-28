@@ -1,0 +1,51 @@
+HTML Form Generation Utility
+Trevor "RM_Trev" Daniels
+
+This script was written to speed up the development of web-based forms,
+while simultaneously reducing the amount of HTML mixed in with PHP.  The
+script recognizes the following form constructs:
+
+ - form: Top level form element
+ - text: Basic single line text field
+ - textarea: Multi-line text box
+ - password: Same as text, except the characters are masked
+ - radio: Set of radio buttons
+ - check: Set of check boxes
+ - menu: Select menu
+ - optgroup: Option group, for use with select menus
+ - file: File field
+ - fieldset: Groups a set of fields.  Can use a legend to describe the set.
+ - msg: Plain text message
+ - placeholder: Element set aside for use with client-side scripting.
+
+When a form is generated, it constructs the form as an unordered list, with
+each of the above constructs placed inside list elements.
+
+Each construct except for "form" has a css method, which allows the user to
+apply CSS classes to that construct.  The "fieldset" construct has a legend
+method, which sets the fieldset's legend to the string given.
+
+Here is a usage example:
+
+// Generate the form object.
+$form = f("form");
+
+// Generate a fieldset for contact information
+$contact = f("fieldset")->legend("Contact Information");
+$name = f("text","name")->label("Name")->css("textbox");
+$address = f("text","address")->label("Address")->css("textbox");
+$phone = f("text","phone")->label("Phone Number")->css("textbox");
+// Add the fields to the fieldset
+$contact->add($name)->add($address)->add($phone);
+// Add the fieldset to the form
+$form->add($contact);
+
+// Generate a set of radio buttons with "Foo" and "Bar"
+$rads = f("radio","rads")->label("Foo Bar?")->css("radio")
+  ->opt(1,"Foo")
+  ->opt(2,"Bar");
+// Add the radio buttons to the form
+$form->add($rads);
+
+// Generate the form and print on the page
+echo $form->out();
